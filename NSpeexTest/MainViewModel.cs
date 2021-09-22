@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.ServiceModel;
 using System.Threading;
 using Microsoft.Practices.Composite.Wpf.Commands;
@@ -8,6 +9,7 @@ using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using NSpeex;
 using NSpeexTestServer;
+using System.Diagnostics;
 
 namespace NSpeexTest
 {
@@ -18,20 +20,15 @@ namespace NSpeexTest
 
     public class JitterBufferWaveProvider : WaveStream
     {
-        private readonly SpeexDecoder decoder = new SpeexDecoder(BandMode.Narrow);
+        private readonly SpeexDecoder decoder = new SpeexDecoder(BandMode.Wide);
         private readonly SpeexJitterBuffer jitterBuffer;
-
-        //private readonly NativeDecoder decoder = new NativeDecoder((EncodingMode)1);
-        //private readonly NativeJitterBuffer jitterBuffer;
-
         private readonly WaveFormat waveFormat;
-        private readonly object readWriteLock = new object();
+        private object readWriteLock = new object();
 
         public JitterBufferWaveProvider()
         {
             waveFormat = new WaveFormat(decoder.FrameSize * 50, 16, 1);
             jitterBuffer = new SpeexJitterBuffer(decoder);
-            //jitterBuffer = new NativeJitterBuffer(decoder);
         }
 
         public override int Read(byte[] buffer, int offset, int count)
@@ -48,7 +45,7 @@ namespace NSpeexTest
                     }
                     else
                     {
-                        short[] decodedBuffer = new short[decoder.FrameSize * 2];
+                        short[] decodedBuffer = new short[decoder.FrameSize];
                         jitterBuffer.Get(decodedBuffer);
                         for (int i = 0; i < decodedBuffer.Length; ++i)
                         {
@@ -229,9 +226,7 @@ namespace NSpeexTest
     {
         private long bufferDepth;
         private readonly SpeexEncoder encoder;
-        //private readonly NativeEncoder encoder;
-
-        //todo: private readonly NativePreprocessor preProcessor;
+        private readonly NativePreprocessor preProcessor;
         private bool isRecording;
         private ISpeexStreamer sender;
         private ISpeexStreamer listener;
@@ -245,14 +240,10 @@ namespace NSpeexTest
         {
             listenAddress = "net.tcp://localhost:8001/SpeexStreamer";
 
-            encoder = new SpeexEncoder(BandMode.Narrow);
-            //encoder.VBR = true;
+            encoder = new SpeexEncoder(BandMode.Wide);
+            encoder.VBR = true;
             //encoder.DTX = true;
-            //todo: preProcessor = new NativePreprocessor(encoder.FrameSize, 16000);// { AGC = true, AGCIncrement = 1, MaxAGCGain = 10, Denoise = true, VAD = true };
-
-            //encoder = new NativeEncoder((EncodingMode) 1);
-            //encoder.VBR = false;
-            //encoder.DTX = false;
+            preProcessor = new NativePreprocessor(encoder.FrameSize, 16000);// { AGC = true, AGCIncrement = 1, MaxAGCGain = 10, Denoise = true, VAD = true };
 
             waveFormat = new WaveFormat(encoder.FrameSize*50, 16, 1);
             waveIn = new WaveIn {WaveFormat = waveFormat, BufferMillisconds = 40, NumberOfBuffers = 2};
@@ -434,19 +425,62 @@ namespace NSpeexTest
 
         private void waveIn_DataAvailable(object sender, WaveInEventArgs e)
         {
-            // convert to short
-            short[] data = new short[e.BytesRecorded / 2];
-            Buffer.BlockCopy(e.Buffer, 0, data, 0, e.BytesRecorded);
-            var encodedData = new byte[e.BytesRecorded];
-            var encodedBytes = encoder.Encode(data, 0, data.Length, encodedData, 0, encodedData.Length);
-            if (encodedBytes != 0)
-            {
-                var upstreamFrame = new byte[encodedBytes];
-                Array.Copy(encodedData, upstreamFrame, encodedBytes);
+            int samplesPerFrame = encoder.FrameSize;
+            byte[] buffer = e.Buffer;
+            short[] frame = new short[samplesPerFrame];
+            byte[] encodedFrame = new byte[e.BytesRecorded];
+            int encodedBytesSample = 0;
+            byte[] upstreamEncodedSample = new byte[e.BytesRecorded];
 
-                //Debug.WriteLine("Publishing: " + encodedBytesSample + " bytes");));)
+            int frameIndex = 0;
+            for (int index = 0; index < e.BytesRecorded; index += 2, frameIndex = ++frameIndex % samplesPerFrame)
+            {
+                frame[frameIndex] = BitConverter.ToInt16(buffer, index);
+                if (frameIndex != samplesPerFrame - 1) continue;
+                if (preProcessor.Process(frame))
+                {
+                    if (encoder.ProcessData(frame, 0, frame.Length))
+                    {
+                        int encodedBytes = encoder.GetProcessedData(encodedFrame, 0);
+
+                        Array.Copy(BitConverter.GetBytes(encodedBytes), 0, upstreamEncodedSample, encodedBytesSample,
+                                   sizeof(int));
+                        encodedBytesSample += 4;
+                        Array.Copy(encodedFrame, 0, upstreamEncodedSample, encodedBytesSample, encodedBytes);
+                        encodedBytesSample += encodedBytes;
+                    }
+                }
+            }
+
+            if (frameIndex != 0)
+            {
+                while (frameIndex < samplesPerFrame)
+                {
+                    // fill the last frame with 0s
+                    frame[frameIndex++] = 0;
+                }
+
+                if (encoder.ProcessData(frame, 0, frame.Length))
+                {
+                    int encodedBytes = encoder.GetProcessedData(encodedFrame, 0);
+                    Array.Copy(BitConverter.GetBytes(encodedBytes), 0, upstreamEncodedSample, encodedBytesSample,
+                               sizeof (int));
+                    encodedBytesSample += 4;
+                    Array.Copy(encodedFrame, 0, upstreamEncodedSample, encodedBytesSample, encodedBytes);
+                    encodedBytesSample += encodedBytes;
+                }
+            }
+
+            if (encodedBytesSample != 0)
+            {
+                var upstreamFrame = new byte[encodedBytesSample];
+                Array.Copy(upstreamEncodedSample, upstreamFrame, encodedBytesSample);
+
+                //Debug.WriteLine("Publishing: " + encodedBytesSample + " bytes");
                 this.sender.Publish(upstreamFrame);
             }
+            else
+                Debug.WriteLine("DTX");
         }
 
         private void waveIn_RecordingStopped(object sender, EventArgs e)
@@ -470,7 +504,13 @@ namespace NSpeexTest
 
         public void OnPublish(byte[] data)
         {
-            waveProvider.Write(data, 0, data.Length);
+            var reader = new BinaryReader(new MemoryStream(data));
+            while (reader.PeekChar() != -1)
+            {
+                int frameLength = reader.ReadInt32();
+                byte[] frame = reader.ReadBytes(frameLength);
+                waveProvider.Write(frame, 0, frameLength);
+            }
         }
 
         #endregion

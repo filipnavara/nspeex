@@ -36,7 +36,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-    <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
+    <CodeContractsAssemblyMode>0</CodeContractsAssemblyMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -68,20 +68,17 @@
     <CodeContractsBaseLineFile />
     <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
-    <CodeContractsContainerAnalysis>False</CodeContractsContainerAnalysis>
-    <CodeContractsExtraRewriteOptions />
-    <CodeContractsCacheAnalysisResults>False</CodeContractsCacheAnalysisResults>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\bin\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeContractsEnableRuntimeChecking>False</CodeContractsEnableRuntimeChecking>
-    <CodeContractsRuntimeOnlyPublicSurface>True</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
     <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
     <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
     <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
@@ -100,11 +97,7 @@
     <CodeContractsExtraAnalysisOptions />
     <CodeContractsBaseLineFile />
     <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
-    <CodeContractsRuntimeCheckingLevel>Preconditions</CodeContractsRuntimeCheckingLevel>
-    <DocumentationFile>..\bin\Release\NSpeex.XML</DocumentationFile>
-    <CodeContractsContainerAnalysis>False</CodeContractsContainerAnalysis>
-    <CodeContractsExtraRewriteOptions />
-    <CodeContractsCacheAnalysisResults>False</CodeContractsCacheAnalysisResults>
+    <CodeContractsRuntimeCheckingLevel>None</CodeContractsRuntimeCheckingLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -149,7 +142,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
-    <CodeContractsRuntimeOnlyPublicSurface>True</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
     <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
     <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
     <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
@@ -167,7 +160,7 @@
     <CodeContractsPlatformPath />
     <CodeContractsExtraAnalysisOptions />
     <CodeContractsBaseLineFile />
-    <CodeContractsRuntimeCheckingLevel>Preconditions</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsRuntimeCheckingLevel>None</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
   </PropertyGroup>
   <ItemGroup>
@@ -185,46 +178,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AudioFileWriter.cs" />
     <Compile Include="BandMode.cs" />
     <Compile Include="Bits.cs" />
-    <Compile Include="CodebookSearch.cs" />
-    <Compile Include="Codebook_Constants.cs" />
-    <Compile Include="Filters.cs" />
-    <Compile Include="HighLspQuant.cs" />
+    <Compile Include="Decoder.cs" />
+    <Compile Include="Encoder.cs" />
     <Compile Include="IDecoder.cs" />
     <Compile Include="IEncoder.cs" />
-    <Compile Include="Inband.cs" />
-    <Compile Include="InvalidFormatException.cs" />
-    <Compile Include="JitterBuffer.cs" />
-    <Compile Include="LbrLspQuant.cs" />
-    <Compile Include="Lpc.cs" />
-    <Compile Include="Lsp.cs" />
-    <Compile Include="LspQuant.cs" />
-    <Compile Include="Ltp.cs" />
-    <Compile Include="Ltp3Tap.cs" />
-    <Compile Include="LtpForcedPitch.cs" />
-    <Compile Include="Misc.cs" />
-    <Compile Include="NbCodec.cs" />
-    <Compile Include="NbDecoder.cs" />
-    <Compile Include="NbEncoder.cs" />
-    <Compile Include="NbLspQuant.cs" />
-    <Compile Include="NoiseSearch.cs" />
-    <Compile Include="OggCrc.cs" />
-    <Compile Include="OggSpeexWriter.cs" />
-    <Compile Include="PcmWaveWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RawWriter.cs" />
-    <Compile Include="SbCodec.cs" />
-    <Compile Include="SbDecoder.cs" />
-    <Compile Include="SbEncoder.cs" />
-    <Compile Include="SpeexDecoder.cs" />
-    <Compile Include="SpeexEncoder.cs" />
-    <Compile Include="SplitShapeSearch.cs" />
-    <Compile Include="Stereo.cs" />
-    <Compile Include="SubMode.cs" />
-    <Compile Include="Vbr.cs" />
-    <Compile Include="VQ.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -243,6 +203,139 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NSpeexWrapper\NSpeexWrapper.vcxproj">
+      <Project>{582133E9-73A8-4EE0-9E28-418D08537E8C}</Project>
+      <Name>NSpeexWrapper</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="original_src\include\speex.h" />
+    <Content Include="original_src\include\speex_bits.h" />
+    <Content Include="original_src\include\speex_buffer.h" />
+    <Content Include="original_src\include\speex_callbacks.h" />
+    <Content Include="original_src\include\speex_echo.h" />
+    <Content Include="original_src\include\speex_header.h" />
+    <Content Include="original_src\include\speex_jitter.h" />
+    <Content Include="original_src\include\speex_preprocess.h" />
+    <Content Include="original_src\include\speex_resampler.h" />
+    <Content Include="original_src\include\speex_stereo.h" />
+    <Content Include="original_src\include\speex_types.h" />
+    <Content Include="original_src\lib_speex\arch.h" />
+    <Content Include="original_src\lib_speex\bits.c" />
+    <Content Include="original_src\lib_speex\buffer.c" />
+    <Content Include="original_src\lib_speex\cb_search.c" />
+    <Content Include="original_src\lib_speex\cb_search.h" />
+    <Content Include="original_src\lib_speex\cb_search_arm4.h" />
+    <Content Include="original_src\lib_speex\cb_search_bfin.h" />
+    <Content Include="original_src\lib_speex\cb_search_sse.h" />
+    <Content Include="original_src\lib_speex\exc_10_16_table.c" />
+    <Content Include="original_src\lib_speex\exc_10_32_table.c" />
+    <Content Include="original_src\lib_speex\exc_20_32_table.c" />
+    <Content Include="original_src\lib_speex\exc_5_256_table.c" />
+    <Content Include="original_src\lib_speex\exc_5_64_table.c" />
+    <Content Include="original_src\lib_speex\exc_8_128_table.c" />
+    <Content Include="original_src\lib_speex\fftwrap.c" />
+    <Content Include="original_src\lib_speex\fftwrap.h" />
+    <Content Include="original_src\lib_speex\filterbank.c" />
+    <Content Include="original_src\lib_speex\filterbank.h" />
+    <Content Include="original_src\lib_speex\filters.c" />
+    <Content Include="original_src\lib_speex\filters.h" />
+    <Content Include="original_src\lib_speex\filters_arm4.h" />
+    <Content Include="original_src\lib_speex\filters_bfin.h" />
+    <Content Include="original_src\lib_speex\filters_sse.h" />
+    <Content Include="original_src\lib_speex\fixed_arm4.h" />
+    <Content Include="original_src\lib_speex\fixed_arm5e.h" />
+    <Content Include="original_src\lib_speex\fixed_bfin.h" />
+    <Content Include="original_src\lib_speex\fixed_debug.h" />
+    <Content Include="original_src\lib_speex\fixed_generic.h" />
+    <Content Include="original_src\lib_speex\gain_table.c" />
+    <Content Include="original_src\lib_speex\gain_table_lbr.c" />
+    <Content Include="original_src\lib_speex\hexc_10_32_table.c" />
+    <Content Include="original_src\lib_speex\hexc_table.c" />
+    <Content Include="original_src\lib_speex\high_lsp_tables.c" />
+    <Content Include="original_src\lib_speex\jitter.c" />
+    <Content Include="original_src\lib_speex\kiss_fft.c" />
+    <Content Include="original_src\lib_speex\kiss_fft.h" />
+    <Content Include="original_src\lib_speex\kiss_fftr.c" />
+    <Content Include="original_src\lib_speex\kiss_fftr.h" />
+    <Content Include="original_src\lib_speex\lpc.c" />
+    <Content Include="original_src\lib_speex\lpc.h" />
+    <Content Include="original_src\lib_speex\lpc_bfin.h" />
+    <Content Include="original_src\lib_speex\lsp.c" />
+    <Content Include="original_src\lib_speex\lsp.h" />
+    <Content Include="original_src\lib_speex\lsp_bfin.h" />
+    <Content Include="original_src\lib_speex\lsp_tables_nb.c" />
+    <Content Include="original_src\lib_speex\ltp.c" />
+    <Content Include="original_src\lib_speex\ltp.h" />
+    <Content Include="original_src\lib_speex\ltp_arm4.h" />
+    <Content Include="original_src\lib_speex\ltp_bfin.h" />
+    <Content Include="original_src\lib_speex\ltp_sse.h" />
+    <Content Include="original_src\lib_speex\math_approx.h" />
+    <Content Include="original_src\lib_speex\mdf.c" />
+    <Content Include="original_src\lib_speex\misc_bfin.h" />
+    <Content Include="original_src\lib_speex\modes.c" />
+    <Content Include="original_src\lib_speex\modes.h" />
+    <Content Include="original_src\lib_speex\modes_wb.c" />
+    <Content Include="original_src\lib_speex\nb_celp.c" />
+    <Content Include="original_src\lib_speex\nb_celp.h" />
+    <Content Include="original_src\lib_speex\os_support.h" />
+    <Content Include="original_src\lib_speex\preprocess.c" />
+    <Content Include="original_src\lib_speex\pseudofloat.h" />
+    <Content Include="original_src\lib_speex\quant_lsp.c" />
+    <Content Include="original_src\lib_speex\quant_lsp.h" />
+    <Content Include="original_src\lib_speex\quant_lsp_bfin.h" />
+    <Content Include="original_src\lib_speex\resample.c" />
+    <Content Include="original_src\lib_speex\resample_sse.h" />
+    <Content Include="original_src\lib_speex\sb_celp.c" />
+    <Content Include="original_src\lib_speex\sb_celp.h" />
+    <Content Include="original_src\lib_speex\scal.c" />
+    <Content Include="original_src\lib_speex\smallft.c" />
+    <Content Include="original_src\lib_speex\smallft.h" />
+    <Content Include="original_src\lib_speex\speex.c" />
+    <Content Include="original_src\lib_speex\speex_callbacks.c" />
+    <Content Include="original_src\lib_speex\speex_header.c" />
+    <Content Include="original_src\lib_speex\stack_alloc.h" />
+    <Content Include="original_src\lib_speex\stereo.c" />
+    <Content Include="original_src\lib_speex\testdenoise.c" />
+    <Content Include="original_src\lib_speex\testecho.c" />
+    <Content Include="original_src\lib_speex\testenc.c" />
+    <Content Include="original_src\lib_speex\testenc_uwb.c" />
+    <Content Include="original_src\lib_speex\testenc_wb.c" />
+    <Content Include="original_src\lib_speex\testjitter.c" />
+    <Content Include="original_src\lib_speex\vbr.c" />
+    <Content Include="original_src\lib_speex\vbr.h" />
+    <Content Include="original_src\lib_speex\vorbis_psy.h" />
+    <Content Include="original_src\lib_speex\vq.c" />
+    <Content Include="original_src\lib_speex\vq.h" />
+    <Content Include="original_src\lib_speex\vq_arm4.h" />
+    <Content Include="original_src\lib_speex\vq_bfin.h" />
+    <Content Include="original_src\lib_speex\vq_sse.h" />
+    <Content Include="original_src\lib_speex\window.c" />
+    <Content Include="original_src\lib_speex\_kiss_fft_guts.h" />
+    <Content Include="original_src\src\getopt.c" />
+    <Content Include="original_src\src\getopt1.c" />
+    <Content Include="original_src\src\getopt_win.h" />
+    <Content Include="original_src\src\skeleton.c" />
+    <Content Include="original_src\src\skeleton.h" />
+    <Content Include="original_src\src\speexdec.c" />
+    <Content Include="original_src\src\speexenc.c" />
+    <Content Include="original_src\src\wave_out.c" />
+    <Content Include="original_src\src\wave_out.h" />
+    <Content Include="original_src\src\wav_io.c" />
+    <Content Include="original_src\src\wav_io.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="original_src\include\speex_config_types.h.in" />
+    <None Include="original_src\lib_speex\echo_diagnostic.m" />
+    <None Include="original_src\lib_speex\Makefile.am" />
+    <None Include="original_src\lib_speex\Makefile.in" />
+    <None Include="original_src\src\Makefile.am" />
+    <None Include="original_src\src\Makefile.in" />
+    <None Include="original_src\src\speexdec.1" />
+    <None Include="original_src\src\speexenc.1" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -9,11 +9,6 @@ NSpeex::NativeEncoder::NativeEncoder(EncodingMode mode)
 	bits = new SpeexBits();
 	speex_bits_init(bits);
 	enc_state = speex_encoder_init(ConvertToSpeexMode(mode));
-
-	short samplesPerFrameTemp;
-	if (speex_encoder_ctl(this->enc_state, SPEEX_GET_FRAME_SIZE, &samplesPerFrameTemp))
-		throw gcnew InvalidOperationException();
-	this->samplesPerFrame = samplesPerFrameTemp;
 }
 
 NSpeex::NativeEncoder::~NativeEncoder()
@@ -22,23 +17,17 @@ NSpeex::NativeEncoder::~NativeEncoder()
 	speex_encoder_destroy(enc_state); 
 }
 
-int NSpeex::NativeEncoder::Encode(array<short>^ inData, int inOffset, int inCount, array<Byte>^ outData, int outOffset, int outCount)
+int NSpeex::NativeEncoder::Encode(array<short>^ inData, array<Byte>^ outData)
 {
-	pin_ptr<short> inDataPtr = &inData[inOffset];
-	pin_ptr<Byte> outDataPtr = &outData[outOffset];
-	int samplesProcessed = 0;
-	int dtxResult = 0;
-	speex_bits_reset(this->bits);
-	while (samplesProcessed < inCount)
-	{
-		dtxResult += speex_encode_int(this->enc_state, inDataPtr + samplesProcessed, this->bits);
+	pin_ptr<short> speexIn = &inData[0];
+	pin_ptr<Byte> speexOut = &outData[0];
+	
+	speex_bits_reset(bits);
+	int encoded_len = 0;
+	if (speex_encode_int(enc_state, speexIn, bits) != 0)
+		encoded_len = speex_bits_write(bits, (char*)speexOut, outData->Length);
 
-		samplesProcessed += samplesPerFrame;
-	}
-	if (dtxResult == 0)
-		return 0;
-
-	return speex_bits_write(this->bits, (char*)outDataPtr, outCount);
+	return encoded_len;
 }
 
 NSpeex::NativeDecoder::NativeDecoder(EncodingMode mode)
@@ -46,11 +35,6 @@ NSpeex::NativeDecoder::NativeDecoder(EncodingMode mode)
 	bits = new SpeexBits();
 	speex_bits_init(bits);
 	dec_state = speex_decoder_init(ConvertToSpeexMode(mode));
-	short samplesPerFrameTemp;
-	if (speex_decoder_ctl(this->dec_state, SPEEX_GET_FRAME_SIZE, &samplesPerFrameTemp))
-		throw gcnew InvalidOperationException();
-
-	this->samplesPerFrame = samplesPerFrameTemp;
 }
 
 NSpeex::NativeDecoder::~NativeDecoder()
@@ -59,31 +43,21 @@ NSpeex::NativeDecoder::~NativeDecoder()
 	speex_decoder_destroy(dec_state); 
 }
 
-short NSpeex::NativeDecoder::Decode(array<Byte>^ inData, int inOffset, int inCount, array<short>^ outData, int outOffset, bool lostFrame)
-{	
-	pin_ptr<short> outDataPtr = &outData[outOffset];
-	if (lostFrame)	
-		return this->Decode(0, inOffset, inCount, outDataPtr, outOffset);
+int NSpeex::NativeDecoder::Decode(array<Byte>^ inData, int count, array<short>^ outData)
+{
+	pin_ptr<short> speexOut = &outData[0];
 
-	pin_ptr<Byte> inDataPtr = &inData[inOffset];
-	return this->Decode(inDataPtr, inOffset, inCount, outDataPtr, outOffset);
-}
-
-short NSpeex::NativeDecoder::Decode(Byte* inDataPtr, int inOffset, int inCount, short* outDataPtr, int outOffset)
-{	
-	// null pointer for inBits means lost frame
-	if (inDataPtr == 0)
+	if (count == 0)
 	{
-		speex_decode_int(this->dec_state, 0, outDataPtr);
-		return this->samplesPerFrame;
+		return speex_decode_int(dec_state, 0, speexOut);
 	}
-
-	speex_bits_read_from(this->bits, (char*)inDataPtr, inCount);
-	int samplesDecoded = 0;
-	while(speex_decode_int(this->dec_state, this->bits, outDataPtr + samplesDecoded) == 0)
-		samplesDecoded += this->samplesPerFrame;
-
-	return samplesDecoded;
+	else
+	{
+		pin_ptr<Byte> speexIn = &inData[0];
+		speex_bits_reset(bits);
+		speex_bits_read_from(bits, (char*)speexIn, count);
+		return speex_decode_int(dec_state, bits, speexOut);
+	}
 }
 
 NSpeex::NativePreprocessor::NativePreprocessor(int frameSize, int samplingRate)
@@ -150,11 +124,17 @@ void NSpeex::NativeJitterBuffer::Get(array<short>^ decodedData)
 	if (ret != JITTER_BUFFER_OK)
 	{
 		// no packet found
-		decoder->Decode(0, 0, 0, pinDecodedData, 0);
+		speex_decode_int(decoder->dec_state, 0, pinDecodedData);
 	}
 	else
 	{
-		decoder->Decode((Byte*)p.data, 0, p.len, pinDecodedData, 0);
+		speex_bits_read_from(bits, p.data, p.len);
+		int ret = speex_decode_int(decoder->dec_state, bits, pinDecodedData);
+		if (ret != 0)
+		{
+			// error while decoding
+			//decodedData->Clear(decodedData, 0, decodedData->Length);
+		}
 	}
 
 	jitter_buffer_tick(jitter);

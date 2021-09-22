@@ -1,8 +1,6 @@
 //
 // Copyright (C) 2003 Jean-Marc Valin
-// Copyright (C) 1999-2003 Wimba S.A., All Rights Reserved.
-// Copyright (C) 2008 Filip Navara
-// Copyright (C) 2009-2010 Christoph Fröschl
+// Copyright (C) 2011 Christoph Froeschl
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
@@ -34,17 +32,13 @@
 
 namespace NSpeex
 {
-	/// <summary>
-	/// Speex Encoder interface, used as a base for the Narrowband and sideband
-	/// encoders.
-	/// </summary>
-    internal interface IEncoder
+	public interface IEncoder
 	{
 		/// <summary>
 		/// Encode the given input signal.
 		/// </summary>
 		/// <returns>1 if successful.</returns>
-		int Encode(Bits bits, float[] ins0);
+		int Encode(Bits output, float[] input);
 
 		int EncodedFrameSize
 		{

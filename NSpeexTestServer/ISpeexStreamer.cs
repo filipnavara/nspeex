@@ -2,16 +2,12 @@
 
 namespace NSpeexTestServer
 {
-    [ServiceContract]
-    public interface ISpeexStreamerUp
+    [ServiceContract(CallbackContract = typeof(ISpeexStreamerCallback))]
+    public interface ISpeexStreamer
     {
         [OperationContract(IsOneWay = true)]
         void Publish(byte[] data);
-    }
 
-    [ServiceContract(CallbackContract = typeof(ISpeexStreamerCallback))]
-    public interface ISpeexStreamer : ISpeexStreamerUp
-    {
         [OperationContract]
         void Subscribe();
     }
@@ -21,9 +17,6 @@ namespace NSpeexTestServer
         [OperationContract(IsOneWay = true)]
         void OnPublish(byte[] data);
     }
-
-    public interface ISpeexStreamerUpChannel : ISpeexStreamerUp, IClientChannel
-    { }
 
     public interface ISpeexStreamerChannel : ISpeexStreamer, IClientChannel
     {}

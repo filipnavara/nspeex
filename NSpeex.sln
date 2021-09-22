@@ -14,17 +14,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSpeexTestServer", "NSpeexT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceHost", "ServiceHost\ServiceHost.csproj", "{3E737BAA-DC20-48FD-B15D-646AE9529EC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSpeexTest.Silverlight", "NSpeexTest.Silverlight\NSpeexTest.Silverlight.csproj", "{AF311FF8-B5C3-4DDB-8F52-B32884FCBD13}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSpeexTest.Silverlight.Web", "NSpeexTest.Silverlight.Web\NSpeexTest.Silverlight.Web.csproj", "{E51442F7-7669-4F98-A2AF-048325F07B9B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSpeex.Silverlight", "NSpeex.Silverlight\NSpeex.Silverlight.csproj", "{AC12FC33-7134-48EB-82F9-4E672A25AA7B}"
-EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 9
+		SccNumberOfProjects = 6
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs08
+		SccTeamFoundationServer = https://tfs08.codeplex.com/
 		SccLocalPath0 = .
 		SccProjectUniqueName1 = NSpeexTest\\NSpeexTest.csproj
 		SccProjectName1 = NSpeexTest
@@ -41,15 +35,6 @@ Global
 		SccProjectUniqueName5 = NSpeexWrapper\\NSpeexWrapper.vcxproj
 		SccProjectName5 = NSpeexWrapper
 		SccLocalPath5 = NSpeexWrapper
-		SccProjectUniqueName6 = NSpeexTest.Silverlight\\NSpeexTest.Silverlight.csproj
-		SccProjectName6 = NSpeexTest.Silverlight
-		SccLocalPath6 = NSpeexTest.Silverlight
-		SccProjectUniqueName7 = NSpeexTest.Silverlight.Web\\NSpeexTest.Silverlight.Web.csproj
-		SccProjectName7 = NSpeexTest.Silverlight.Web
-		SccLocalPath7 = NSpeexTest.Silverlight.Web
-		SccProjectUniqueName8 = NSpeex.Silverlight\\NSpeex.Silverlight.csproj
-		SccProjectName8 = NSpeex.Silverlight
-		SccLocalPath8 = NSpeex.Silverlight
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +72,7 @@ Global
 		{582133E9-73A8-4EE0-9E28-418D08537E8C}.Debug|x86.ActiveCfg = Debug|Win32
 		{582133E9-73A8-4EE0-9E28-418D08537E8C}.Debug|x86.Build.0 = Debug|Win32
 		{582133E9-73A8-4EE0-9E28-418D08537E8C}.Release|Any CPU.ActiveCfg = Release|Win32
+		{582133E9-73A8-4EE0-9E28-418D08537E8C}.Release|Any CPU.Build.0 = Release|Win32
 		{582133E9-73A8-4EE0-9E28-418D08537E8C}.Release|Mixed Platforms.ActiveCfg = Release|Win32
 		{582133E9-73A8-4EE0-9E28-418D08537E8C}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{582133E9-73A8-4EE0-9E28-418D08537E8C}.Release|Win32.ActiveCfg = Release|Win32
@@ -141,42 +127,6 @@ Global
 		{3E737BAA-DC20-48FD-B15D-646AE9529EC5}.Release|Win32.Build.0 = Release|Any CPU
 		{3E737BAA-DC20-48FD-B15D-646AE9529EC5}.Release|x86.ActiveCfg = Release|x86
 		{3E737BAA-DC20-48FD-B15D-646AE9529EC5}.Release|x86.Build.0 = Release|x86
-		{AF311FF8-B5C3-4DDB-8F52-B32884FCBD13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AF311FF8-B5C3-4DDB-8F52-B32884FCBD13}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AF311FF8-B5C3-4DDB-8F52-B32884FCBD13}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{AF311FF8-B5C3-4DDB-8F52-B32884FCBD13}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{AF311FF8-B5C3-4DDB-8F52-B32884FCBD13}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{AF311FF8-B5C3-4DDB-8F52-B32884FCBD13}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{AF311FF8-B5C3-4DDB-8F52-B32884FCBD13}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AF311FF8-B5C3-4DDB-8F52-B32884FCBD13}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AF311FF8-B5C3-4DDB-8F52-B32884FCBD13}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{AF311FF8-B5C3-4DDB-8F52-B32884FCBD13}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{AF311FF8-B5C3-4DDB-8F52-B32884FCBD13}.Release|Win32.ActiveCfg = Release|Any CPU
-		{AF311FF8-B5C3-4DDB-8F52-B32884FCBD13}.Release|x86.ActiveCfg = Release|Any CPU
-		{E51442F7-7669-4F98-A2AF-048325F07B9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E51442F7-7669-4F98-A2AF-048325F07B9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E51442F7-7669-4F98-A2AF-048325F07B9B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{E51442F7-7669-4F98-A2AF-048325F07B9B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{E51442F7-7669-4F98-A2AF-048325F07B9B}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{E51442F7-7669-4F98-A2AF-048325F07B9B}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E51442F7-7669-4F98-A2AF-048325F07B9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E51442F7-7669-4F98-A2AF-048325F07B9B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E51442F7-7669-4F98-A2AF-048325F07B9B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{E51442F7-7669-4F98-A2AF-048325F07B9B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{E51442F7-7669-4F98-A2AF-048325F07B9B}.Release|Win32.ActiveCfg = Release|Any CPU
-		{E51442F7-7669-4F98-A2AF-048325F07B9B}.Release|x86.ActiveCfg = Release|Any CPU
-		{AC12FC33-7134-48EB-82F9-4E672A25AA7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AC12FC33-7134-48EB-82F9-4E672A25AA7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AC12FC33-7134-48EB-82F9-4E672A25AA7B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{AC12FC33-7134-48EB-82F9-4E672A25AA7B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{AC12FC33-7134-48EB-82F9-4E672A25AA7B}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{AC12FC33-7134-48EB-82F9-4E672A25AA7B}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{AC12FC33-7134-48EB-82F9-4E672A25AA7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AC12FC33-7134-48EB-82F9-4E672A25AA7B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AC12FC33-7134-48EB-82F9-4E672A25AA7B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{AC12FC33-7134-48EB-82F9-4E672A25AA7B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{AC12FC33-7134-48EB-82F9-4E672A25AA7B}.Release|Win32.ActiveCfg = Release|Any CPU
-		{AC12FC33-7134-48EB-82F9-4E672A25AA7B}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

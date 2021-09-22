@@ -45,13 +45,15 @@ namespace NSpeex {
 		NativeEncoder(EncodingMode mode);
 		~NativeEncoder();
 
-		int Encode(array<short>^ inData, int inOffset, int inCount, array<Byte>^ outData, int outOffset, int outCount);
+		int Encode(array<short>^ inData, array<Byte>^ outData);
 
 		property int FrameSize
 		{
 			int get()
 			{
-				return samplesPerFrame;
+				int frame_size;
+				speex_encoder_ctl(enc_state, SPEEX_GET_FRAME_SIZE, &frame_size);
+				return frame_size;
 			}
 		}
 
@@ -84,7 +86,6 @@ namespace NSpeex {
 	private:
 		SpeexBits* bits;
 		void* enc_state;
-		short samplesPerFrame;
 	};
 
 	public ref class NativeDecoder
@@ -93,23 +94,23 @@ namespace NSpeex {
 		NativeDecoder(EncodingMode mode);
 		~NativeDecoder();
 
-		short Decode(array<Byte>^ inData, int inOffset, int inCount, array<short>^ outData, int outOffset, bool lostFrame);
+		int Decode(array<Byte>^ inData, int count, array<short>^ outData);
 
 		property int FrameSize
 		{
 			int get()
 			{
-				return samplesPerFrame;
+				int frame_size;
+				speex_decoder_ctl(dec_state, SPEEX_GET_FRAME_SIZE, &frame_size);
+				return frame_size;
 			}
 		}
 
 	internal:
 		void* dec_state;
-		short Decode(Byte* inData, int inOffset, int inCount, short* outData, int outOffset);
 
 	private:
 		SpeexBits* bits;
-		short samplesPerFrame;
 	};
 
 	public ref class NativePreprocessor

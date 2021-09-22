@@ -1,8 +1,6 @@
 //
 // Copyright (C) 2003 Jean-Marc Valin
-// Copyright (C) 1999-2003 Wimba S.A., All Rights Reserved.
-// Copyright (C) 2008 Filip Navara
-// Copyright (C) 2009-2010 Christoph Fröschl
+// Copyright (C) 2011 Christoph Froeschl
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
@@ -32,20 +30,18 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-
 namespace NSpeex
 {
 	/// <summary>
 	/// Speex bit packing and unpacking class.
 	/// </summary>
-	internal class Bits
+	public class Bits
 	{
 		/// <summary>
 		/// Default buffer size
 		/// </summary>
 		///
-		public const int DefaultBufferSize = 1024;
+		public const int DEFAULT_BUFFER_SIZE = 1024;
 
 		/// <summary>
 		/// "raw" data
@@ -62,14 +58,12 @@ namespace NSpeex
 		/// </summary>
 		private int bitPtr;
 
-	    private int nbBits;
-
 		/// <summary>
 		/// Initialise the bit packing variables.
 		/// </summary>
 		public Bits()
 		{
-			bytes = new byte[DefaultBufferSize];
+			bytes = new byte[DEFAULT_BUFFER_SIZE];
 			bytePtr = 0;
 			bitPtr = 0;
 		}
@@ -101,21 +95,11 @@ namespace NSpeex
 		/// </summary>
 		public void ReadFrom(byte[] newbytes, int offset, int len)
 		{
-            // resize if needed
-            if (bytes.Length < len)
-                bytes = new byte[len];
-
 			for (int i = 0; i < len; i++)
 				bytes[i] = newbytes[offset + i];
 			bytePtr = 0;
 			bitPtr = 0;
-		    nbBits = len*8;
 		}
-
-        public int BitsRemaining()
-        {
-            return nbBits - (bytePtr*8 + bitPtr);
-        }
 
 		/// <summary>
 		/// Read the next N bits from the buffer.
@@ -151,7 +135,7 @@ namespace NSpeex
 				// Expand the buffer as needed.
 				int size = bytes.Length * 2;
 				byte[] tmp = new byte[size];
-				Array.Copy(bytes, 0, tmp, 0, bytes.Length);
+				System.Array.Copy(bytes, 0, tmp, 0, bytes.Length);
 				bytes = tmp;
 			}
 			while (nbBits > 0)
@@ -169,38 +153,10 @@ namespace NSpeex
 			}
 		}
 
-        public void InsertTerminator()
-        {
-            if (bitPtr > 0)
-                Pack(0, 1);
-            while (bitPtr != 0)
-                Pack(1, 1);
-        }
-
-        public int Write(byte[] buffer, int offset, int maxBytes)
-        {
-            // insert terminator, but save the data so we can put it back after
-            var localBitPtr = bitPtr;
-            var localBytePtr = bytePtr;
-            var localBytes = bytes;
-            InsertTerminator();
-            bitPtr = localBitPtr;
-            bytePtr = localBytePtr;
-            bytes = localBytes;
-
-            if (maxBytes > BufferSize)
-                maxBytes = BufferSize;
-
-            Array.Copy(bytes, 0, buffer, offset, maxBytes);
-            return maxBytes;
-        }
-
-        public void Reset()
-        {
-            Array.Clear(bytes, 0, bytes.Length);
-            bytePtr = 0;
-            bitPtr = 0;
-        }
+		public byte[] Buffer
+		{
+			get { return bytes; }
+		}
 
 		public int BufferSize
 		{

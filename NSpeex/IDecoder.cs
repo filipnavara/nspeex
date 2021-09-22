@@ -1,8 +1,6 @@
 //
 // Copyright (C) 2003 Jean-Marc Valin
-// Copyright (C) 1999-2003 Wimba S.A., All Rights Reserved.
-// Copyright (C) 2008 Filip Navara
-// Copyright (C) 2009-2010 Christoph Fröschl
+// Copyright (C) 2011 Christoph Froeschl
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
@@ -34,18 +32,14 @@
 
 namespace NSpeex
 {
-	/// <summary>
-	/// Speex Decoder inteface, used as a base for the Narrowband and sideband
-	/// decoders.
-	/// </summary>
-	internal interface IDecoder
+	public interface IDecoder
 	{
 		/// <summary>
 		/// Decode the given input bits.
 		/// </summary>
 		/// <returns>1 if a terminator was found, 0 if not.</returns>
-        /// <exception cref="InvalidFormatException">If there is an error detected in the data stream.</exception>
-		int Decode(Bits bits, float[] xout);
+		/// <exception cref="System.IO.InvalidDataException">If there is an error detected in the data stream.</exception>
+		int Decode(Bits bits, float[] inout);
 
 		/// <summary>
 		/// Decode the given bits to stereo.

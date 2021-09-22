@@ -175,6 +175,10 @@
       <Project>{8A9D286A-351E-4827-B80F-6E955C9075DE}</Project>
       <Name>NSpeexTestServer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NSpeexWrapper\NSpeexWrapper.vcxproj">
+      <Project>{582133E9-73A8-4EE0-9E28-418D08537E8C}</Project>
+      <Name>NSpeexWrapper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NSpeex\NSpeex.csproj">
       <Project>{B084CD9F-263F-4106-B049-A244AB880B05}</Project>
       <Name>NSpeex</Name>
